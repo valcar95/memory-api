@@ -2,7 +2,91 @@
 
 En este laboratorio ganará algún grado de familiaridad con la asignación de memoria (memory allocation). Para el caso, usted escribirá algunos programas con bugs. Luego, usará algunas herramientas para localizar los bugs que usted ha insertado. De este modo se familiarizará con algunas de estas herramientas para un uso futuro. Estas herramientas son: el debuger (**gdb**) y el memory-bug detector (**valgrind**).
 
-## Actividades ##
+## Actividades previas ##
+Antes de empezar el laboratorio se recomienda (de manera opcional) realizar las siguientes tareas:
+1. Revisar los conceptos de **memoria dinamica** vistos previamente si no los recuerta puede acceder al siguiente [enlace](https://github.com/dannymrock/UdeA-SO-Lab/blob/master/lab0/lab0b/parte5/memoria_dinamica.ipynb) en el cual se encuentra la teoria. 
+2. En la pagina del laboratorio se recolecto información sobre las herramientas [gdb](https://github.com/dannymrock/UdeA-SO-Lab/tree/master/lab2/herramientas/gdb) y [valgrind](https://github.com/dannymrock/UdeA-SO-Lab/tree/master/lab2/herramientas/valgrind), es muy basica pero mirarla y analizarla antes del laboratorio le puede ser de mucha ayuda.
+3. Revise y trate de entender que hacen los siguientes códigos (teniendo en cuenta la teoria vista en malloc):
+
+**Codigo 1**:
+
+```C
+#define NULL 0
+
+int main() {
+  int *p = (int*)malloc(5*sizeof(int));
+  int array[] = {1,2,3,4,5};
+  printf("sizeof(p): %d\n",sizeof(p));
+  printf("sizeof(p): %d\n",sizeof(*p));
+  printf("sizeof(p): %d\n",sizeof(array));
+  free(p);
+  p = NULL;
+  return 0;
+}
+```
+Enlace para [simular](http://www.pythontutor.com/c.html#code=%23define%20NULL%200%0A%0Aint%20main%28%29%20%7B%0A%20%20int%20*p%20%3D%20%28int*%29malloc%285*sizeof%28int%29%29%3B%0A%20%20int%20array%5B%5D%20%3D%20%7B1,2,3,4,5%7D%3B%0A%20%20printf%28%22sizeof%28p%29%3A%20%25d%5Cn%22,sizeof%28p%29%29%3B%0A%20%20printf%28%22sizeof%28p%29%3A%20%25d%5Cn%22,sizeof%28*p%29%29%3B%0A%20%20printf%28%22sizeof%28p%29%3A%20%25d%5Cn%22,sizeof%28array%29%29%3B%0A%20%20/*%0A%20%20for%20%28int%20*p%20%3D%20ia%3B%20p%20%3C%20ia%20%2B%20sizeof%28ia%29/sizeof%28*ia%29%3B%20%2B%2Bp%29%20%7B%0A%20%20%20%20printf%28%22Char%20is%3A%20%25d%5Cn%22,%20*p%29%3B%0A%20%20%20%20*/%0A//%7D%0A%20%20/*%0A%20%20while%28p%20!%3D%20NULL%29%20%7B%0A%20%20%20%20p%2B%2B%3B%0A%20%20%20%20%0A%20%20%7D%0A%20%20*/%0A%20%20%0A%20%20free%28p%29%3B%0A%20%20p%20%3D%20NULL%3B%0A%20%20return%200%3B%0A%7D&mode=edit&origin=opt-frontend.js&py=c&rawInputLstJSON=%5B%5D).
+
+**Codigo 2**:
+
+```C
+#define NULL 0
+
+int main() {  
+  int *p[2];
+  int **q = p;
+  int a[] = {1,2,3};
+  int b[] = {4,5,6,7};
+  p[0] = &a[0];
+  p[1] = b;
+  *(p[0] + 2) = -1;
+  *(p[1] + 1) = 3;
+  *(*p + 1) = 10;
+  *(*(p + 1) + 3) = -7;
+  *(*q + 1) = **q + *(*q + 2);  
+  q = q + 1;
+  *(*q + 1) = *(*q + 3) + *(*q + 2);  
+  return 0;
+}
+```
+Enlace para [simular](http://www.pythontutor.com/c.html#code=%23define%20NULL%200%0A%0Aint%20main%28%29%20%7B%20%20%0A%20%20int%20*p%5B2%5D%3B%0A%20%20int%20**q%20%3D%20p%3B%0A%20%20int%20a%5B%5D%20%3D%20%7B1,2,3%7D%3B%0A%20%20int%20b%5B%5D%20%3D%20%7B4,5,6,7%7D%3B%0A%20%20p%5B0%5D%20%3D%20%26a%5B0%5D%3B%0A%20%20p%5B1%5D%20%3D%20b%3B%0A%20%20*%28p%5B0%5D%20%2B%202%29%20%3D%20-1%3B%0A%20%20*%28p%5B1%5D%20%2B%201%29%20%3D%203%3B%0A%20%20*%28*p%20%2B%201%29%20%3D%2010%3B%0A%20%20*%28*%28p%20%2B%201%29%20%2B%203%29%20%3D%20-7%3B%0A%20%20*%28*q%20%2B%201%29%20%3D%20**q%20%2B%20*%28*q%20%2B%202%29%3B%20%20%0A%20%20q%20%3D%20q%20%2B%201%3B%0A%20%20*%28*q%20%2B%201%29%20%3D%20*%28*q%20%2B%203%29%20%2B%20*%28*q%20%2B%202%29%3B%20%20%0A%20%20return%200%3B%0A%7D&curInstr=0&mode=display&origin=opt-frontend.js&py=c&rawInputLstJSON=%5B%5D).
+
+**Codigo 3**:
+
+```C
+#define NULL 0
+
+int main() {  
+  // Reserva de memoria
+  int **p = (int *)malloc(2*sizeof(int *));
+  *p = (int)malloc(3*sizeof(int));
+  *(p + 1) = (int)malloc(5*sizeof(int));
+  
+  // Manipulando la memoria reservada
+  int i;
+  for(i = 0; i < 3; i++) {
+    *(*p + i) = 2*i;
+  }
+  for(i = 0; i < 5; i++) {
+    if (i%2 == 0) {
+      *(*(p + 1) + i) = -i;
+    }
+    else {
+      *(*(p + 1) + i) = 0;      
+    }
+  }
+  
+  
+  // Liberacion de memoria
+  free(*p);
+  free(*(p + 1));
+  free(p);
+  p = NULL;
+  return 0;
+}
+```
+Enlace para [simular](http://www.pythontutor.com/c.html#code=%23define%20NULL%200%0A%0Aint%20main%28%29%20%7B%20%20%0A%20%20//%20Reserva%20de%20memoria%0A%20%20int%20**p%20%3D%20%28int%20*%29malloc%282*sizeof%28int%20*%29%29%3B%0A%20%20*p%20%3D%20%28int%29malloc%283*sizeof%28int%29%29%3B%0A%20%20*%28p%20%2B%201%29%20%3D%20%28int%29malloc%285*sizeof%28int%29%29%3B%0A%20%20%0A%20%20//%20Manipulando%20la%20memoria%20reservada%0A%20%20int%20i%3B%0A%20%20for%28i%20%3D%200%3B%20i%20%3C%203%3B%20i%2B%2B%29%20%7B%0A%20%20%20%20*%28*p%20%2B%20i%29%20%3D%202*i%3B%0A%20%20%7D%0A%20%20for%28i%20%3D%200%3B%20i%20%3C%205%3B%20i%2B%2B%29%20%7B%0A%20%20%20%20if%20%28i%252%20%3D%3D%200%29%20%7B%0A%20%20%20%20%20%20*%28*%28p%20%2B%201%29%20%2B%20i%29%20%3D%20-i%3B%0A%20%20%20%20%7D%0A%20%20%20%20else%20%7B%0A%20%20%20%20%20%20*%28*%28p%20%2B%201%29%20%2B%20i%29%20%3D%200%3B%20%20%20%20%20%20%0A%20%20%20%20%7D%0A%20%20%20%20%20%20%0A%20%20%7D%0A%20%20%0A%20%20%0A%20%20//%20Liberacion%20de%20memoria%0A%20%20free%28*p%29%3B%0A%20%20free%28*%28p%20%2B%201%29%29%3B%0A%20%20free%28p%29%3B%0A%20%20p%20%3D%20NULL%3B%0A%20%20%0A%20%20return%200%3B%0A%7D&curInstr=0&mode=display&origin=opt-frontend.js&py=c&rawInputLstJSON=%5B%5D)
+
+## Actividades de laboratorio ##
 
 1. Escriba un programa simple llamado ```null.c``` que cree un puntero a un entero, llevelo a null y entonces intente desreferenciarlo (esto es, asignarle un valor). Compile este programa llamado ```null```. ¿Qué pasa cuando usted ejecuta este programa?
 
