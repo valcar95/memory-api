@@ -102,7 +102,11 @@ Enlace para [simular](http://www.pythontutor.com/c.html#code=%23define%20NULL%20
 
 3. Haga uso de la herramienta ```valgrind``` en el programa empleado en los puntos anteriores. Se usará la herramienta ```memcheck``` que es parte de ```valgrind``` para analizar lo que pasa: ```valgrind --leak-check=yes null```. ¿Qué pasa cuando corre esto?, ¿Puede usted interpretar la salida de la herramienta anterior?
 
+**Saca el error anterior con un mejor nivel de detalle nos dice que Address 0x0 is not stack'd, malloc'd or (recently) free'd lo que podemos intepretar como en el punto anterior (la memoria no fue separada con mmaloc)**
+
 4. Escriba un programa sencillo que asigne memoria usando ```malloc()``` pero olvide liberarla antes de que el programa termina. ¿Qué pasa cuando este programa se ejecuta?, ¿Puede usted usar gdb para encontrar problemas como este?, ¿Que dice acerca de Valgrind (de nuevo use este con la bandera ```--leak check=yes```)?
+
+**El gdb muestra [Inferior 1 (process 3109) exited normally] Por su parte el Valgrind nos muestra "ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)" \n, También nos indica que en el HEAP al salir (at exit) hay 4 bytes in 1 blocks**
 
 5. Escriba un programa que cree un array de enteros llamado data de un tamaño de 100 usando ```malloc```; entonces, lleve el ```data[100]``` a ```0```. ¿Qué pasa cuando este programa se ejecuta?, ¿Qué pasa cuando se corre el programa usando ```valgrind```?, ¿El programa es correcto?
 
