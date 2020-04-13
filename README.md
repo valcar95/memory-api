@@ -141,7 +141,7 @@ Enlace para [simular](http://www.pythontutor.com/c.html#code=%23define%20NULL%20
 <ul>
 <li>Invalid write of size 4</li>
 <li>Invalid read of size 4</li>
-<ul>
+</ul>
 
 **Estos errores se presentan la tercera vez que se agrega/lee un item de la lista**
 
