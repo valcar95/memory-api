@@ -110,9 +110,30 @@ Enlace para [simular](http://www.pythontutor.com/c.html#code=%23define%20NULL%20
 
 5. Escriba un programa que cree un array de enteros llamado data de un tamaño de 100 usando ```malloc```; entonces, lleve el ```data[100]``` a ```0```. ¿Qué pasa cuando este programa se ejecuta?, ¿Qué pasa cuando se corre el programa usando ```valgrind```?, ¿El programa es correcto?
 
+**Al asignar un valor a un espacio de memoria que se encuentra por fuera del rango especificado se obntiene el siguiente error**
+==2324== error calling PR_SET_PTRACER, vgdb might block
+==2324== Invalid write of size 4
+==2324==    at 0x10866A: main (in /mnt/c/Users/usuario/Documents/Work/u/Operativos/Labs/4 - Valgrind & Gdb/memory-api/actividades/p5.o)
+==2324==  Address 0x522d1d0 is 0 bytes after a block of size 400 alloc'd
+==2324==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2324==    by 0x10865B: main (in /mnt/c/Users/usuario/Documents/Work/u/Operativos/Labs/4 - Valgrind & Gdb/memory-api/actividades/p5.o)
+
 6. Codifique un programa que asigne un array de enteros (como arriba), luego lo libere, y entonces intente imprimir el valor de un elemento del array. ¿El programa corre?, ¿Que pasa cuando hace uso de ```valgrind```?
 
+**Se obtiene un error de lectura, a pesar de que se puede leer lo que hay en la posición dada del array**
+
+==2652== Invalid read of size 4
+==2652==    at 0x108712: main (in /mnt/c/Users/usuario/Documents/Work/u/Operativos/Labs/4 - Valgrind & Gdb/memory-api/actividades/p6.o)
+==2652==  Address 0x522d068 is 40 bytes inside a block of size 400 free'd
+==2652==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2652==    by 0x108709: main (in /mnt/c/Users/usuario/Documents/Work/u/Operativos/Labs/4 - Valgrind & Gdb/memory-api/actividades/p6.o)
+
 7. Ahora pase un **funny value** para liberar (e.g. un puntero en la mitad del array que usted ha asignado) ¿Qué pasa?, ¿Ústed necesita herramientas para encontrar este tipo de problemas?
+
+**Se intenta liberar un valor que no ha sido inicializado**
+
+==2797== error calling PR_SET_PTRACER, vgdb might block
+==2797== Conditional jump or move depends on uninitialised value(s)
 
 8. Intente usar alguna de las otras interfaces para asignacion de memoria. Por ejemplo, cree una estructura de datos simple similar a un vector y que use rutinas que usen realloc para manejar el vector. Use un array para almacenar los elementos del vector; cuando un usuario agregue una entrada al vector, use realloc para asignar un espacio mas a este. ¿Que tan bien funciona el vector asi?, ¿Como se compara con una lista enlazada?, utilice ```valgrind``` para ayudarse en la busqueda de errores.
 
