@@ -137,14 +137,17 @@ Enlace para [simular](http://www.pythontutor.com/c.html#code=%23define%20NULL%20
 
 8. Intente usar alguna de las otras interfaces para asignacion de memoria. Por ejemplo, cree una estructura de datos simple similar a un vector y que use rutinas que usen realloc para manejar el vector. Use un array para almacenar los elementos del vector; cuando un usuario agregue una entrada al vector, use realloc para asignar un espacio mas a este. ¿Que tan bien funciona el vector asi?, ¿Como se compara con una lista enlazada?, utilice ```valgrind``` para ayudarse en la busqueda de errores.
 
-**Cuando se ejecuta  el archivo compilado sin el valgrind parace funcionar bien, sien embargo, el valgrind nos muestra algunos errores como:**
-Invalid write of size 4<br>
-Invalid read of size 4<br>
+**Cuando se ejecuta  el archivo compilado sin el valgrind parace funcionar bien, sien embargo, el valgrind nos muestra algunos errores como:<br>**
+<ul>
+<li>Invalid write of size 4</li>
+<li>Invalid read of size 4</li>
+<ul>
 
 **Estos errores se presentan la tercera vez que se agrega/lee un item de la lista**
 
-9. Gaste mas tiempo y lea sobre el uso de gdb y valgrind. Conocer estas herramientas es critico; gaste el tiempo y aprenda como volverse un experto debugger en UNIX y C enviroment.
+9. Gaste mas tiempo y lea sobre el uso de gdb y valgrind. Conocer estas herramientas es critico; gaste el tiempo y aprenda como volverse un experto debugger en UNIX y C enviroment.<br>
 
+**Durante el tiempo de búsqueda se implementó una extención de visual studio que permite hacer debugger usando el gdb pero con interfaz gráfica y manejo de los breakpoints más fácil. la extención se puede descargar <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools">Aquí</a>**
 
 ### Valgrind ###
 
