@@ -138,8 +138,8 @@ Enlace para [simular](http://www.pythontutor.com/c.html#code=%23define%20NULL%20
 8. Intente usar alguna de las otras interfaces para asignacion de memoria. Por ejemplo, cree una estructura de datos simple similar a un vector y que use rutinas que usen realloc para manejar el vector. Use un array para almacenar los elementos del vector; cuando un usuario agregue una entrada al vector, use realloc para asignar un espacio mas a este. ¿Que tan bien funciona el vector asi?, ¿Como se compara con una lista enlazada?, utilice ```valgrind``` para ayudarse en la busqueda de errores.
 
 **Cuando se ejecuta  el archivo compilado sin el valgrind parace funcionar bien, sien embargo, el valgrind nos muestra algunos errores como:**
-Invalid write of size 4
-Invalid read of size 4
+Invalid write of size 4<br>
+Invalid read of size 4<br>
 
 **Estos errores se presentan la tercera vez que se agrega/lee un item de la lista**
 
