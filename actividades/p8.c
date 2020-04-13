@@ -6,23 +6,67 @@ Intente usar alguna de las otras interfaces para asignacion de memoria. Por ejem
 #include <stdio.h>
 #include <stdlib.h>
 
-struct pto8Mipapa
+typedef  struct 
 {
-    int *p;
-    void (*relokalize)(int *p, int x);
-};
+    int n;
+    int *data;
+} my_array;
 
-void relokalize(int *p, int x)
-{
-    p = (int *)realloc(p, x);
-}
+
+void add_item(my_array *arr, int item);
+int get_item(my_array *arr, int index);
+void print_values(my_array *arr);
+void free_arr(my_array *arr);
 
 int main()
 {
-    struct pto8Mipapa ptoelklolea;
-    ptoelklolea.p = malloc(sizeof(int));
-    *ptoelklolea.p = 12;
-    ptoelklolea.relokalize(ptoelklolea.p, 12);
+   my_array arr={};
+   int value=0;
+   printf("Para terminar digite -1\n");
+   while(value!=-1){
+       printf("Digite un numero:");
+       scanf("%d", &value);
+       if(value!=-1){
+          add_item(&arr,value);
+       }
+       printf("\n");
+   }
+   
+   print_values(&arr);
+   free_arr(&arr);
+   return 0;
+}
 
-    return 0;
+void add_item(my_array *arr, int item){
+    void* tmp;
+    if(arr->n==0){
+        tmp = malloc(sizeof(int));
+        arr->n=1;
+        arr->data=tmp;
+    }
+    else
+    {
+        tmp = realloc(arr->data, sizeof(int));
+        if (tmp != NULL) {
+            arr->n=arr->n+1;
+            arr->data=tmp;
+        }
+    }
+    
+    arr->data[arr->n-1]=item;
+}
+
+int get_item(my_array *arr, int index){
+    return arr->data[index];
+}
+
+void free_arr(my_array *arr){
+    free(arr->data);
+}
+
+void print_values(my_array *arr){
+    printf("\n\n ---------------Valores en la lista ------------------\n\n");
+    for(int i=0; i<arr->n; i++){
+         printf("item:%d = %d\n",i,get_item(arr,i));
+    }
 }
