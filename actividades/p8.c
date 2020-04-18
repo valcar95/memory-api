@@ -46,9 +46,9 @@ void add_item(my_array *arr, int item){
     }
     else
     {
-        tmp = realloc(arr->data, sizeof(int));
+        arr->n=arr->n+1;
+        tmp = realloc(arr->data, arr->n*sizeof(int));
         if (tmp != NULL) {
-            arr->n=arr->n+1;
             arr->data=tmp;
         }
     }
